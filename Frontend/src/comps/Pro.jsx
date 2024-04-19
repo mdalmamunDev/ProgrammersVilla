@@ -23,7 +23,7 @@ const Pro = ({ pro, setProInfo }) => {
 
             <div className="w3-white about-heading w3-card-4">
               <div className="w3-display-container">
-                <img src={pro.img ? pro.img : img} style={{
+                <img src={pro.img ? `uploads/${pro.img}` : img} style={{
                   width: "100%",
                 }} alt="Avatar" />
                 <div className="w3-display-bottomleft w3-container w3-text-black">
