@@ -3,7 +3,14 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import ProListRander from "./ProListRander";
 import { useState } from "react";
 
-const ProList = ({ proList, setProInfo }) => {
+const ProList = ({ proList, setRoot, setPro }) => {
+
+  if (!proList || proList.length === 0)
+    return (
+      <h3 className="text-center text-danger pb-5">No data to show</h3>
+    );
+
+
 
   const [moreProOpen, setMoreProOpen] = useState(false);
 
@@ -23,8 +30,9 @@ const ProList = ({ proList, setProInfo }) => {
 
         <ProListRander
           proList={proList}
-          setProInfo={setProInfo}
           rows={rows}
+          setRoot={setRoot}
+          setPro={setPro}
         />
       </div>
 

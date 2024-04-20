@@ -1,6 +1,6 @@
 import img from '../assets/img/pro_2.jpg'
 
-const ProCard = ({ pro, setProInfo }) => {
+const ProCard = ({ pro, setRoot, setPro }) => {
   return (
     <div className="card" style={{
       width: "100%",
@@ -11,7 +11,10 @@ const ProCard = ({ pro, setProInfo }) => {
         <h5 className="card-title">{pro.name}</h5>
         <p className="card-text">{pro.about.substring(0, 150)}...</p>
         <a href="#" className="btn card-btn"
-          onClick={() => { setProInfo(pro) }}
+          onClick={() => { 
+            setPro(pro);
+            setRoot('Pro');
+           }}
         >More</a>
       </div>
     </div>

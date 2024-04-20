@@ -1,11 +1,11 @@
 import ProCard from "./ProCard"
 
-const ProListRander = ({ proList, setProInfo, rows }) => {
+const ProListRander = ({ proList, rows, setRoot, setPro }) => {
   let row = 0;
 
   return (
     <>
-      {/* Render two rows */
+      {/* Render rows */
         rows.map((rowIndex) => (
           <div className="row mb-3" key={rowIndex}>
             {/* Render three ProCard components in each row */
@@ -15,7 +15,7 @@ const ProListRander = ({ proList, setProInfo, rows }) => {
                 if (item)
                   return (
                     <div className="col-4" key={colIndex}>
-                      <ProCard pro={item} setProInfo={setProInfo} />
+                      <ProCard pro={item} setRoot={setRoot} setPro={setPro} />
                     </div>
                   )
               })

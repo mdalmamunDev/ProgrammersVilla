@@ -4,7 +4,8 @@ import { faAsterisk, faBriefcase, faCalendar, faCertificate, faCircleLeft, faCod
 import { faCodepen } from '@fortawesome/free-brands-svg-icons';
 
 
-const Pro = ({ pro, setProInfo }) => {
+const Pro = ({setRoot, pro, setPro}) => {
+
   return (
     <div className="pb-5 pt-1">
 
@@ -13,7 +14,10 @@ const Pro = ({ pro, setProInfo }) => {
         maxWidth: "1400px",
       }}>
         <FontAwesomeIcon icon={faCircleLeft} className='fa-fw w3-margin-right w3-xxlarge mb-2 my-icon pro-btn-back'
-          onClick={() => { setProInfo() }} />
+          onClick={() => {
+            setPro(undefined);
+            setRoot('Home');
+          }} />
 
         {/* The Grid */}
         <div className="row">

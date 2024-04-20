@@ -1,16 +1,17 @@
 import './App.css'
 import Footer from './comps/Footer'
 import Header from './comps/Header'
-import Hero from './comps/Hero'
-import Pro from './comps/Pro'
-import ProList from './comps/ProList'
+import Pro from './roots/Pro'
 import { useEffect, useState } from 'react'
 import axios from 'axios';
+import Home from './roots/Home'
+import AddPro from './roots/AddPro'
 
 function App() {
 
-  const [proInfo, setProInfo] = useState([]);
-  const [proList, setProList] = useState();
+  const [root, setRoot] = useState('Home');
+  const [proList, setProList] = useState([]);
+  const [pro, setPro] = useState();
 
   useEffect(() => {
     const getProList = async () => {
@@ -27,19 +28,17 @@ function App() {
 
   return (
     <>
-      <Header />
-      {
-        !proInfo ? (
-          <>
-            <Hero />
-            <ProList
-              proList={proList}
-              setProInfo={setProInfo}
-            />
-          </>
-        ) :
-          <Pro pro={proInfo} setProInfo={setProInfo} />
-      }
+      <Header setRoot={setRoot} />
+      {(() => {
+        switch (root) {
+          case 'Pro':
+            return <Pro setRoot={setRoot} pro={pro} setPro={setPro} />;
+          case 'AddPro':
+            return <AddPro proList={proList} setProList={setProList} setRoot={setRoot} setPro={setPro} />;
+          default:
+            return <Home proList={proList} setRoot={setRoot} setPro={setPro} />;
+        }
+      })()}
       <Footer />
     </>
   )
