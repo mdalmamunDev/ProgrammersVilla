@@ -1,10 +1,39 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import img from '../assets/img/pro_2.jpg'
-import { faAsterisk, faBriefcase, faCalendar, faCertificate, faCircleLeft, faCode, faEnvelope, faHome, faPhone, faSuitcase, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faAsterisk, faBars, faBriefcase, faBug, faCalendar, faCertificate, faCircleLeft, faCode, faEnvelope, faGlassWaterDroplet, faHome, faPenToSquare, faPhone, faSuitcase, faTableList } from '@fortawesome/free-solid-svg-icons';
 import { faCodepen } from '@fortawesome/free-brands-svg-icons';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 
-const Pro = ({setRoot, pro, setPro}) => {
+const Pro = ({ setRoot, proList, setProList, pro, setPro }) => {
+
+  if (!pro) return <h1>No data to show</h1>
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+    console.log(54444);
+    await axios
+      .post(`http://localhost:3000/programmer/dropProgrammer`, { id: pro._id })
+      .then((res) => {
+        if (res.data) {
+          console.log(res.data.message);
+          toast.success("Deleted Successfully");
+          //update proList
+          setProList(proList.filter(programmer => programmer._id !== pro._id));
+          setPro(undefined);
+          setRoot('Home');
+          console.log(654);
+        }
+        // localStorage.setItem("Users", JSON.stringify(res.data.user));
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err);
+          toast.error("Error: " + err.response.data.message);
+        }
+      });
+  };
 
   return (
     <div className="pb-5 pt-1">
@@ -13,11 +42,36 @@ const Pro = ({setRoot, pro, setPro}) => {
       <div className="w3-content w3-margin-top" style={{
         maxWidth: "1400px",
       }}>
-        <FontAwesomeIcon icon={faCircleLeft} className='fa-fw w3-margin-right w3-xxlarge mb-2 my-icon pro-btn-back'
-          onClick={() => {
-            setPro(undefined);
-            setRoot('Home');
-          }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <FontAwesomeIcon icon={faCircleLeft} className='fa-fw w3-margin-right w3-xxlarge mb-2 my-icon pro-btn-back'
+            onClick={() => {
+              setPro(undefined);
+              setRoot('Home');
+            }} />
+
+          <div className="dropdown">
+            <FontAwesomeIcon icon={faBars} className='fa-fw w3-margin-right w3-xxlarge mb-2 my-icon' />
+            <div className="dropdown-content">
+              <a href="#" className='dropdown-content-single my-icon'
+                onClick={() => {
+                  setRoot('EditPro');
+                }}>
+                <FontAwesomeIcon icon={faPenToSquare} className='fa-fw w3-large' />
+                Edit
+              </a>
+              <form className='dropdown-content-single' onSubmit={handleDrop} method='POST'>
+                <button className='my-icon' style={{ border: 'none', background: 'none', padding: '0px' }}>
+                  <FontAwesomeIcon icon={faGlassWaterDroplet} className='fa-fw w3-large' />
+                  Drop
+                </button>
+              </form>
+              <a href="#" className='dropdown-content-single my-icon'>
+                <FontAwesomeIcon icon={faBug} className='fa-fw w3-large' />
+                Report
+              </a>
+            </div>
+          </div>
+        </div>
 
         {/* The Grid */}
         <div className="row">

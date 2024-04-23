@@ -17,7 +17,6 @@ function App() {
     const getProList = async () => {
       try {
         const res = await axios.get("http://localhost:3000/programmer");
-        console.log(res.data);
         setProList(res.data);
       } catch (error) {
         console.log(error);
@@ -32,9 +31,11 @@ function App() {
       {(() => {
         switch (root) {
           case 'Pro':
-            return <Pro setRoot={setRoot} pro={pro} setPro={setPro} />;
+            return <Pro setRoot={setRoot} proList={proList} setProList={setProList} pro={pro} setPro={setPro} />;
           case 'AddPro':
             return <AddPro proList={proList} setProList={setProList} setRoot={setRoot} setPro={setPro} />;
+          case 'EditPro':
+            return <AddPro proList={proList} setProList={setProList} setRoot={setRoot} setPro={setPro} pro={pro}/>;
           default:
             return <Home proList={proList} setRoot={setRoot} setPro={setPro} />;
         }

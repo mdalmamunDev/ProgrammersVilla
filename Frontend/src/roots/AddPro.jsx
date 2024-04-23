@@ -2,17 +2,17 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-export default function AddPro({ proList, setProList, setRoot, setPro }) {
+export default function AddPro({ proList, setProList, setRoot, setPro, pro }) {
   const [formData, setFormData] = useState({
-    name: '',
-    about: '',
-    born: '',
-    address: '',
-    parents: '',
-    died: '',
-    education: '',
-    awards: '',
-    img: ''
+    name: pro ? pro.name : '',
+    about: pro ? pro.about : '',
+    born: pro ? pro.born : '',
+    address: pro ? pro.address : '',
+    parents: pro ? pro.parents : '',
+    died: pro ? pro.died : '',
+    education: pro ? pro.education : '',
+    awards: pro ? pro.awards : '',
+    img: pro ? pro.img : ''
   });
 
   const handleChange = (e) => {
@@ -22,17 +22,23 @@ export default function AddPro({ proList, setProList, setRoot, setPro }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    pro ? handleEdit() : handleAdd();
+    // console.log(pro);
+    // console.log(proList);
+    //update root
+    setRoot("Pro");
+  };
+
+  const handleAdd = async () => {
     await axios
-      .post("http://localhost:3000/programmer/addProgrammer", formData)
+      .post(`http://localhost:3000/programmer/addProgrammer`, formData)
       .then((res) => {
         if (res.data) {
-          console.log(res.data);
+          console.log(res.data.message);
           toast.success("Added Successfully");
           //update proList
-          setProList([...proList, res.data.pro]);
-          //update root
-          setRoot("Pro");
           setPro(res.data.pro);
+          setProList([...proList, res.data.pro]);
         }
         // localStorage.setItem("Users", JSON.stringify(res.data.user));
       })
@@ -42,7 +48,36 @@ export default function AddPro({ proList, setProList, setRoot, setPro }) {
           toast.error("Error: " + err.response.data.message);
         }
       });
+  }
+  const handleEdit = async () => {
+    await axios
+      .put(`http://localhost:3000/programmer/editProgrammer`, {
+        id: pro._id,
+        formData: formData
+      })
+      .then((res) => {
+        if (res.data) {
+          console.log(res.data.message);
+          toast.success("Updated Successfully");
+          // Update proList with the updated programmer
+          const updatedProList = proList.map((pro) =>
+            pro._id === res.data.pro._id ? res.data.pro : pro
+          );
+          setProList(updatedProList);
+          // Update pro state if necessary
+          if (pro && pro._id === res.data.pro._id) {
+            setPro(res.data.pro);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          console.log(err);
+          toast.error("Error: " + err.response.data.message);
+        }
+      });
   };
+
 
   return (
     <div className='container'>
