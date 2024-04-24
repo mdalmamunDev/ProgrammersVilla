@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios';
 import Home from './roots/Home'
 import AddPro from './roots/AddPro'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
 
@@ -35,12 +36,16 @@ function App() {
           case 'AddPro':
             return <AddPro proList={proList} setProList={setProList} setRoot={setRoot} setPro={setPro} />;
           case 'EditPro':
-            return <AddPro proList={proList} setProList={setProList} setRoot={setRoot} setPro={setPro} pro={pro}/>;
+            return <AddPro proList={proList} setProList={setProList} setRoot={setRoot} setPro={setPro} pro={pro} />;
           default:
             return <Home proList={proList} setRoot={setRoot} setPro={setPro} />;
         }
       })()}
       <Footer />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
     </>
   )
 }
